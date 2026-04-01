@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <script src="{{ url_for('static', filename='Theme.js') }}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuesioner - ML Personality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-item-active {
+            background-color: #3b82f6;
+            color: white !important;
+        }
+        body { background-color: #f8fafc; transition: all 0.3s ease; }
+        
+        .btn-choice-active {
+            background-color: #2563eb !important;
+            color: white !important;
+            border-color: #2563eb !important;
+        }
+
+        /* LOGIKA CSS MODE GELAP */
+        .dark-mode, .dark-mode body { 
+            background-color: #0f172a !important; 
+            color: #f8fafc !important; 
+        }
+        .dark-mode aside, .dark-mode .bg-white { 
+            background-color: #0f172a !important; 
+            border-color: #1e293b !important; 
+        }
+        .dark-mode h1, .dark-mode h2, .dark-mode p, .dark-mode span, .dark-mode .text-gray-800, .dark-mode .text-gray-900 { 
+            color: #f8fafc !important; 
+        }
+        .dark-mode .text-gray-500, .dark-mode .text-gray-600 { 
+            color: #94a3b8 !important; 
+        }
+        .dark-mode .border-gray-100, .dark-mode .border-gray-200 { 
+            border-color: #1e293b !important; 
+        }
+        .dark-mode nav a:not(.sidebar-item-active) { 
+            color: #94a3b8 !important; 
+        }
+        .dark-mode .bg-blue-100 { 
+            background-color: #1e293b !important; 
+        }
+        /* Memastikan kartu kuesioner kontras saat mode gelap */
+        .dark-mode .bg-white.p-8 {
+            background-color: #1e293b !important;
+            border-color: #334155 !important;
+        }
+    </style>
+</head>
+
+<body class="flex min-h-screen">
+
+    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full z-10">
+        <div class="p-6 flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-md">
+                <i class="fas fa-chart-bar text-white"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-gray-800 leading-tight">ML Personality</h1>
+                <p class="text-xs text-gray-500">Analisis</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <a href="{{ url_for('index') }}" class="sidebar-item-active flex items-center gap-3 px-4 py-3 rounded-xl transition-all">
+                <i class="fas fa-clipboard-list w-5"></i>
+                <span class="font-medium">Kuesioner</span>
+            </a>
+            
+            <a href="{{ url_for('hasil') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
+                <i class="fas fa-chart-line w-5"></i>
+                <span class="font-medium">Hasil Analisis</span>
+            </a>
+            
+            <a href="{{ url_for('tentang') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
+                <i class="fas fa-info-circle w-5"></i>
+                <span class="font-medium">Tentang</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-100 space-y-2">
+            <a href="{{ url_for('pengaturan') }}" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition-all">
+                <i class="fas fa-cog w-4"></i>
+                <span>Pengaturan</span>
+            </a>
+            
+            <div class="flex items-center gap-3 px-4 py-2">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">22</div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800 leading-none">2244002</p>
+                    <span class="text-[10px] text-gray-400">Winston Gareth</span>
+                </div>
+            </div>
+            
+            <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-4 py-2 text-red-500 hover:bg-red-50 rounded-lg text-sm">
+                <i class="fas fa-sign-out-alt w-4"></i>
+                <span>Keluar</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 ml-64 p-8">
+        <div class="flex justify-end items-center gap-4 mb-8">
+            <div class="relative p-2 text-orange-400 bg-orange-50 rounded-lg cursor-default">
+                <i class="fas fa-bell"></i>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
+            </div>
+            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">22</div>
+        </div>
+
+        <div class="max-w-4xl mx-auto mb-10">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Tes Kepribadian Ekstrovert atau Introvert</h2>
+            <p class="text-gray-500 leading-relaxed mb-6">
+                Jawab 10 pertanyaan berikut dengan jujur. Sistem akan menganalisis kepribadian Anda menggunakan algoritma Machine Learning.
+            </p>
+
+            <div class="flex justify-between items-end mb-2">
+                <span class="text-sm font-semibold text-gray-700">Progres: <span id="progress-text">0</span> dari 10 pertanyaan</span>
+                <span class="text-sm font-bold text-blue-600" id="progress-percent">0%</span>
+            </div>
+            <div class="w-full bg-blue-100 h-2 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-blue-500 h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <form action="{{ url_for('analyze') }}" method="POST" id="quizForm">
+            <div class="max-w-4xl mx-auto space-y-6 mb-12">
+                <script>
+                    const questions = [
+                        "Apakah Anda merasa lebih berenergi setelah menghabiskan waktu bersama orang lain?",
+                        "Apakah Anda lebih suka bekerja dalam tim daripada bekerja sendiri?",
+                        "Apakah Anda mudah memulai percakapan dengan orang yang baru dikenal?",
+                        "Apakah Anda merasa nyaman menjadi pusat perhatian dalam suatu acara?",
+                        "Apakah Anda lebih suka menghabiskan waktu luang dengan banyak teman daripada sendirian?",
+                        "Apakah Anda cenderung berpikir dengan keras (berbicara saat berpikir)?",
+                        "Apakah Anda merasa lelah setelah menghadiri acara sosial yang ramai?",
+                        "Apakah Anda lebih suka merencanakan sesuatu secara detail sebelum bertindak?",
+                        "Apakah Anda merasa lebih produktif ketika bekerja di lingkungan yang tenang?",
+                        "Apakah Anda lebih suka mendengarkan daripada berbicara dalam diskusi kelompok?"
+                    ];
+
+                    document.write(questions.map((q, i) => `
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+                            <div class="flex items-start gap-4 mb-6">
+                                <div class="w-8 h-8 bg-blue-500 rounded-full flex-shrink-0 flex items-center justify-center text-white font-bold text-sm">
+                                    ${i + 1}
+                                </div>
+                                <p class="text-lg font-medium text-gray-800">${q}</p>
+                            </div>
+                            <input type="hidden" name="q${i+1}" id="input_q${i+1}" value="">
+                            
+                            <div class="grid grid-cols-2 gap-4">
+                                <button type="button" onclick="setVal(${i+1}, 1, this)" class="py-3 px-6 border-2 border-gray-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 text-gray-600 font-semibold transition-all btn-choice">
+                                    Ya
+                                </button>
+                                <button type="button" onclick="setVal(${i+1}, 0, this)" class="py-3 px-6 border-2 border-gray-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 text-gray-600 font-semibold transition-all btn-choice">
+                                    Tidak
+                                </button>
+                            </div>
+                        </div>
+                    `).join(''));
+                </script>
+            </div>
+
+            <div class="max-w-4xl mx-auto flex justify-between items-center mb-20">
+                <button type="button" onclick="location.reload()" class="px-6 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 font-medium">
+                    Mulai Ulang Tes
+                </button>
+                <button type="submit" id="submitBtn" class="px-10 py-3 bg-gray-400 text-white rounded-xl font-bold shadow-lg cursor-not-allowed transition-all" disabled>
+                    Submit Jawaban
+                </button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Inisialisasi tema saat halaman dimuat
+        window.onload = function() {
+            if (typeof applyTheme === "function") {
+                applyTheme();
+            }
+        };
+
+        let answered = 0;
+        const answeredQuestions = new Set();
+
+        function setVal(qIdx, val, btn) {
+            document.getElementById('input_q' + qIdx).value = val;
+            
+            const parent = btn.parentElement;
+            const siblingButtons = parent.querySelectorAll('button');
+            siblingButtons.forEach(b => b.classList.remove('btn-choice-active', 'bg-blue-600', 'text-white', 'border-blue-600'));
+            
+            btn.classList.add('btn-choice-active', 'bg-blue-600', 'text-white', 'border-blue-600');
+
+            if (!answeredQuestions.has(qIdx)) {
+                answeredQuestions.add(qIdx);
+                answered++;
+                
+                const percent = (answered / 10) * 100;
+                document.getElementById('progress-bar').style.width = percent + '%';
+                document.getElementById('progress-text').innerText = answered;
+                document.getElementById('progress-percent').innerText = percent + '%';
+                
+                if(answered === 10) {
+                    const submitBtn = document.getElementById('submitBtn');
+                    submitBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
+                    submitBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    submitBtn.removeAttribute('disabled');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

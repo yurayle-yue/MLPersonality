@@ -1,0 +1,77 @@
+{
+  "results": [
+    {
+      "Model": "KNN",
+      "Accuracy": 0.9241,
+      "Precision": 0.9245,
+      "Recall": 0.9241,
+      "F1": 0.9242
+    },
+    {
+      "Model": "SVM",
+      "Accuracy": 0.9293,
+      "Precision": 0.9296,
+      "Recall": 0.9293,
+      "F1": 0.9293
+    },
+    {
+      "Model": "Naive Bayes",
+      "Accuracy": 0.9293,
+      "Precision": 0.9296,
+      "Recall": 0.9293,
+      "F1": 0.9293
+    }
+  ],
+  "cms": {
+    "KNN": [
+      [
+        276,
+        26
+      ],
+      [
+        18,
+        260
+      ]
+    ],
+    "SVM": [
+      [
+        278,
+        24
+      ],
+      [
+        17,
+        261
+      ]
+    ],
+    "Naive Bayes": [
+      [
+        278,
+        24
+      ],
+      [
+        17,
+        261
+      ]
+    ]
+  },
+  "probabilities": {
+    "KNN": [
+      51.7,
+      48.3
+    ],
+    "SVM": [
+      51.3,
+      48.7
+    ],
+    "Naive Bayes": [
+      50.9,
+      49.1
+    ]
+  },
+  "class_labels": [
+    "Extrovert",
+    "Introvert"
+  ],
+  "train_size": 2320,
+  "test_size": 580
+}

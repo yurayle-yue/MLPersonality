@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <script src="{{ url_for('static', filename='Theme.js') }}"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan - ML Personality</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .sidebar-item-active {
+            background-color: #3b82f6;
+            color: white !important;
+        }
+        body { background-color: #f8fafc; }
+        
+        @keyframes notif {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .animate-notif { animation: notif 0.4s ease-out; }
+
+        /* LOGIKA CSS MODE GELAP */
+        .dark-mode, .dark-mode body { background-color: #0f172a !important; color: #f8fafc !important; }
+        .dark-mode aside, .dark-mode .bg-white, .dark-mode main { background-color: #0f172a !important; border-color: #1e293b !important; }
+        .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode label, .dark-mode p, .dark-mode span { color: #f8fafc !important; }
+        .dark-mode .border-gray-100, .dark-mode .border-gray-200, .dark-mode div { border-color: #1e293b !important; }
+        .dark-mode nav a:not(.sidebar-item-active) { color: #94a3b8 !important; }
+    </style>
+</head>
+<body class="flex min-h-screen">
+
+    <aside class="w-64 min-w-[256px] bg-white border-r border-gray-200 flex flex-col fixed h-full z-10">
+        <div class="p-6 flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-md">
+                <i class="fas fa-chart-bar text-white"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-gray-800 leading-tight">ML Personality</h1>
+                <p class="text-xs text-gray-500">Analisis</p>
+            </div>
+        </div>
+
+        <nav class="flex-1 px-4 space-y-2 mt-4">
+            <a href="{{ url_for('index') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
+                <i class="fas fa-clipboard-list w-5"></i>
+                <span class="font-medium">Kuesioner</span>
+            </a>
+            
+            <a href="{{ url_for('hasil') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
+                <i class="fas fa-chart-line w-5"></i>
+                <span class="font-medium">Hasil Analisis</span>
+            </a>
+            
+            <a href="{{ url_for('tentang') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
+                <i class="fas fa-info-circle w-5"></i>
+                <span class="font-medium">Tentang</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-100 space-y-2">
+            <a href="{{ url_for('pengaturan') }}" class="sidebar-item-active flex items-center gap-3 px-4 py-2 rounded-lg text-sm transition-all">
+                <i class="fas fa-cog w-4"></i>
+                <span>Pengaturan</span>
+            </a>
+            
+            <div class="flex items-center gap-3 px-4 py-2">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">22</div>
+                <div>
+                    <p class="text-sm font-bold text-gray-800 leading-none">2244002</p>
+                    <span class="text-[10px] text-gray-400">Lihat Profil</span>
+                </div>
+            </div>
+            
+            <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-4 py-2 text-red-500 hover:bg-red-50 rounded-lg text-sm">
+                <i class="fas fa-sign-out-alt w-4"></i>
+                <span>Keluar</span>
+            </a>
+        </div>
+    </aside>
+
+    <main class="flex-1 ml-64 p-8 flex flex-col items-center">
+        <div id="notifContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-3"></div>
+
+        <div class="w-full flex justify-end items-center gap-4 mb-8">
+            <div class="relative p-2 text-orange-400 bg-orange-50 rounded-lg cursor-default">
+                <i class="fas fa-bell"></i>
+                <span class="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
+            </div>
+            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">22</div>
+        </div>
+
+        <div class="max-w-4xl w-full">
+            <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Pengaturan</h2>
+            <p class="text-gray-500 mb-8">Kelola preferensi aplikasi Anda di sini.</p>
+
+            <div class="space-y-8">
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Preferensi Umum</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-center justify-between py-4 border-b border-gray-50">
+                            <div>
+                                <p class="font-bold text-gray-800">Mode Gelap</p>
+                                <p class="text-sm text-gray-500">Aktifkan mode gelap untuk tampilan aplikasi.</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="toggleMode" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between py-4 border-b border-gray-50">
+                            <div>
+                                <p class="font-bold text-gray-800">Notifikasi</p>
+                                <p class="text-sm text-gray-500">Terima notifikasi toast tentang hasil analisis.</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="toggleNotif" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                        <div class="flex items-center justify-between py-4 border-b border-gray-50">
+                            <div>
+                                <p class="font-bold text-gray-800">Simpan Otomatis</p>
+                                <p class="text-sm text-gray-500">Simpan jawaban kuesioner secara otomatis.</p>
+                            </div>
+                            <label class="relative inline-flex items-center cursor-pointer">
+                                <input type="checkbox" id="toggleAutoSave" class="sr-only peer">
+                                <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="bukaModal()" class="px-6 py-2.5 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 shadow-lg shadow-blue-100 transition-all">
+                            Simpan Pengaturan
+                        </button>
+                    </div>
+                </div>
+
+                <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
+                    <h3 class="text-xl font-bold text-gray-800 mb-6">Manajemen Data</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <p class="font-bold text-gray-800">Riwayat Tes</p>
+                            <p class="text-sm text-gray-500 mb-4">Anda memiliki 0 riwayat tes yang tersimpan.</p>
+                            <button onclick="notifHapus()" class="px-4 py-2 border border-gray-200 text-gray-600 rounded-lg text-sm font-medium hover:bg-red-50 hover:text-red-600 transition-colors">Hapus Semua Riwayat</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="modalKonfirmasi" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-8 rounded-3xl shadow-2xl max-w-sm w-full mx-4 text-center border border-gray-100">
+            <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-exclamation-triangle text-2xl"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Konfirmasi Perubahan</h3>
+            <p class="text-gray-500 mb-8 leading-relaxed">Apakah Anda yakin ingin menyimpan dan menerapkan pengaturan baru ini?</p>
+            <div class="flex gap-4">
+                <button onclick="tutupModal()" class="flex-1 py-3 bg-[#fcfcfc] text-gray-600 font-bold rounded-xl border border-gray-200 hover:bg-gray-100 transition-all">Tidak</button>
+                <button onclick="aplikasikanPengaturan()" class="flex-1 py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 shadow-lg shadow-red-100 transition-all">Ya</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const toggleMode = document.getElementById('toggleMode');
+
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            toggleMode.checked = true;
+        }
+
+        function tampilkanToast(pesan, tipe = 'sukses') {
+            const container = document.getElementById('notifContainer');
+            const toast = document.createElement('div');
+            const warna = tipe === 'sukses' ? 'bg-green-600' : 'bg-red-600';
+            const ikon = tipe === 'sukses' ? 'fa-check-circle' : 'fa-trash-alt';
+            toast.className = `${warna} text-white px-6 py-4 rounded-2xl shadow-xl flex items-center gap-3 min-w-[280px] animate-notif`;
+            toast.innerHTML = `<i class="fas ${ikon} text-lg"></i><div><p class="font-bold text-sm">Sistem</p><p class="text-xs opacity-90">${pesan}</p></div>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = '0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 3000);
+        }
+
+        function bukaModal() { document.getElementById('modalKonfirmasi').classList.remove('hidden'); }
+        function tutupModal() { document.getElementById('modalKonfirmasi').classList.add('hidden'); }
+
+        function aplikasikanPengaturan() {
+            tutupModal();
+            if (toggleMode.checked) {
+                localStorage.setItem('darkMode', 'enabled');
+                document.documentElement.classList.add('dark-mode');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+                document.documentElement.classList.remove('dark-mode');
+            }
+            if (typeof applyTheme === "function") {
+                applyTheme();
+            }
+            tampilkanToast("Pengaturan Berhasil Disimpan!");
+        }
+
+        function notifHapus() { tampilkanToast("Riwayat Berhasil Dihapus!", "hapus"); }
+        
+        // Memastikan tema langsung diterapkan saat halaman muat
+        window.onload = function() {
+            if (typeof applyTheme === "function") {
+                applyTheme();
+            }
+        };
+    </script>
+</body>
+</html>
