@@ -8,127 +8,175 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .sidebar-item-active {
-            background-color: #3b82f6;
-            color: white !important;
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: all 0.3s ease;
         }
-        body { background-color: #f8fafc; transition: all 0.3s ease; }
         
-        .btn-choice-active {
-            background-color: #2563eb !important;
-            color: white !important;
-            border-color: #2563eb !important;
+        .sidebar-item-active { 
+            background-color: #3b82f6; 
+            color: white !important; 
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2); 
+        }
+        
+        .btn-choice-active { 
+            background-color: #2563eb !important; 
+            color: white !important; 
+            border-color: #2563eb !important; 
         }
 
-        /* LOGIKA CSS MODE GELAP */
-        .dark-mode, .dark-mode body { 
+        /* LOGIKA CSS MODE GELAP YANG SERAGAM */
+        .dark-mode, 
+        .dark-mode body { 
             background-color: #0f172a !important; 
             color: #f8fafc !important; 
         }
-        .dark-mode aside, .dark-mode .bg-white { 
-            background-color: #0f172a !important; 
-            border-color: #1e293b !important; 
+
+        .dark-mode aside, 
+        .dark-mode .bg-white, 
+        .dark-mode main { 
+            background-color: #1e293b !important; 
+            border-color: #334155 !important; 
         }
-        .dark-mode h1, .dark-mode h2, .dark-mode p, .dark-mode span, .dark-mode .text-gray-800, .dark-mode .text-gray-900 { 
+
+        .dark-mode h1, .dark-mode h2, .dark-mode h3, 
+        .dark-mode h4, .dark-mode h5, .dark-mode h6, 
+        .dark-mode p, .dark-mode span, .dark-mode label { 
             color: #f8fafc !important; 
         }
-        .dark-mode .text-gray-500, .dark-mode .text-gray-600 { 
-            color: #94a3b8 !important; 
+
+        .dark-mode .text-gray-900, 
+        .dark-mode .text-gray-800, 
+        .dark-mode .text-gray-700, 
+        .dark-mode .text-gray-600 { 
+            color: #f8fafc !important; 
         }
-        .dark-mode .border-gray-100, .dark-mode .border-gray-200 { 
-            border-color: #1e293b !important; 
+
+        .dark-mode .text-gray-500 { 
+            color: #cbd5e1 !important; 
         }
+
+        .dark-mode .bg-slate-50 { 
+            background-color: #334155 !important; 
+        }
+
+        .dark-mode .border-gray-100, 
+        .dark-mode .border-gray-200, 
+        .dark-mode div { 
+            border-color: #334155 !important; 
+        }
+
         .dark-mode nav a:not(.sidebar-item-active) { 
             color: #94a3b8 !important; 
         }
-        .dark-mode .bg-blue-100 { 
-            background-color: #1e293b !important; 
-        }
-        /* Memastikan kartu kuesioner kontras saat mode gelap */
-        .dark-mode .bg-white.p-8 {
-            background-color: #1e293b !important;
-            border-color: #334155 !important;
+
+        .dark-mode #sidebarToggle { 
+            color: #f8fafc !important; 
         }
     </style>
 </head>
+<body class="flex min-h-screen relative overflow-x-hidden">
 
-<body class="flex min-h-screen">
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity" onclick="toggleSidebar()"></div>
 
-    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full z-10">
-        <div class="p-6 flex items-center gap-3">
-            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center shadow-md">
-                <i class="fas fa-chart-bar text-white"></i>
+    <aside id="sidebar" class="w-64 bg-white border-r border-gray-200 flex flex-col fixed inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="p-5 md:p-8 flex items-center justify-between md:justify-start gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 md:w-11 md:h-11 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-200">
+                    <i class="fas fa-brain text-white text-lg md:text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-gray-800 leading-tight text-sm">ML Personality</h1>
+                    <p class="text-[10px] text-blue-500 font-extrabold uppercase tracking-widest">Analisis</p>
+                </div>
             </div>
-            <div>
-                <h1 class="font-bold text-gray-800 leading-tight">ML Personality</h1>
-                <p class="text-xs text-gray-500">Analisis</p>
-            </div>
+            <button class="md:hidden text-gray-500 hover:text-gray-800" onclick="toggleSidebar()">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
 
-        <nav class="flex-1 px-4 space-y-2 mt-4">
-            <a href="{{ url_for('index') }}" class="sidebar-item-active flex items-center gap-3 px-4 py-3 rounded-xl transition-all">
-                <i class="fas fa-clipboard-list w-5"></i>
-                <span class="font-medium">Kuesioner</span>
+        <nav class="flex-1 px-3 md:px-4 space-y-1 md:space-y-2 mt-2 md:mt-4">
+            <a href="{{ url_for('index') }}" class="sidebar-item-active flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 rounded-xl md:rounded-2xl transition-all">
+                <i class="fas fa-layer-group"></i>
+                <span class="font-bold text-sm">Kuesioner</span>
             </a>
-            
-            <a href="{{ url_for('hasil') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
-                <i class="fas fa-chart-line w-5"></i>
-                <span class="font-medium">Hasil Analisis</span>
+
+            <a href="{{ url_for('hasil') }}" class="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 text-gray-500 hover:bg-gray-50 rounded-xl md:rounded-2xl transition-all">
+                <i class="fas fa-chart-pie"></i>
+                <span class="font-bold text-sm">Hasil Analisis</span>
             </a>
-            
-            <a href="{{ url_for('tentang') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-all">
-                <i class="fas fa-info-circle w-5"></i>
-                <span class="font-medium">Tentang</span>
+
+            <a href="{{ url_for('perbandingan') }}" class="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 text-gray-500 hover:bg-gray-50 rounded-xl md:rounded-2xl transition-all">
+                <i class="fas fa-balance-scale"></i>
+                <span class="font-bold text-sm">Perbandingan</span>
+            </a>
+
+            <a href="{{ url_for('tentang') }}" class="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 text-gray-500 hover:bg-gray-50 rounded-xl md:rounded-2xl transition-all">
+                <i class="fas fa-id-card"></i>
+                <span class="font-bold text-sm">Tentang</span>
             </a>
         </nav>
 
-        <div class="p-4 border-t border-gray-100 space-y-2">
-            <a href="{{ url_for('pengaturan') }}" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition-all">
+        <div class="p-4 md:p-6 border-t border-gray-100">
+            <a href="{{ url_for('pengaturan') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl text-sm transition-all mb-3">
                 <i class="fas fa-cog w-4"></i>
-                <span>Pengaturan</span>
+                <span class="font-bold text-sm">Pengaturan</span>
             </a>
-            
-            <div class="flex items-center gap-3 px-4 py-2">
-                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-xs font-bold">22</div>
+
+            <div class="flex items-center gap-3 px-3 md:px-4 py-3 md:py-4 bg-slate-50 rounded-2xl md:rounded-3xl mb-4">
+                <div class="w-9 h-9 md:w-10 md:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-black ring-4 ring-blue-50">
+                    22
+                </div>
                 <div>
-                    <p class="text-sm font-bold text-gray-800 leading-none">2244002</p>
-                    <span class="text-[10px] text-gray-400">Winston Gareth</span>
+                    <p class="text-[12px] font-black text-gray-800 leading-none">2244002</p>
+                    <span class="text-[9px] text-gray-400 font-bold uppercase">Winston Gareth</span>
                 </div>
             </div>
-            
-            <a href="{{ url_for('logout') }}" class="flex items-center gap-3 px-4 py-2 text-red-500 hover:bg-red-50 rounded-lg text-sm">
-                <i class="fas fa-sign-out-alt w-4"></i>
-                <span>Keluar</span>
+
+            <a href="{{ url_for('logout') }}" class="flex items-center justify-center gap-2 w-full py-3 text-red-500 hover:bg-red-50 rounded-xl text-xs font-black transition-all">
+                <i class="fas fa-power-off"></i>
+                <span>Keluar Sistem</span>
             </a>
         </div>
     </aside>
 
-    <main class="flex-1 ml-64 p-8">
-        <div class="flex justify-end items-center gap-4 mb-8">
-            <div class="relative p-2 text-orange-400 bg-orange-50 rounded-lg cursor-default">
-                <i class="fas fa-bell"></i>
-                <span class="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
+    <main class="flex-1 w-full ml-0 md:ml-64 p-4 md:p-10 transition-all duration-300">
+        
+        <div class="w-full flex justify-between md:justify-end items-center gap-4 mb-8">
+            <button id="sidebarToggle" class="md:hidden text-gray-800 focus:outline-none" onclick="toggleSidebar()">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <div class="flex items-center gap-4">
+                <div class="relative p-2 text-orange-400 bg-orange-50 rounded-lg cursor-default">
+                    <i class="fas fa-bell"></i>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
+                </div>
+                <div class="hidden md:flex w-10 h-10 bg-blue-500 rounded-full items-center justify-center text-white font-bold shadow-md">
+                    22
+                </div>
             </div>
-            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">22</div>
         </div>
 
-        <div class="max-w-4xl mx-auto mb-10">
-            <h2 class="text-3xl font-extrabold text-gray-900 mb-4">Tes Kepribadian Ekstrovert atau Introvert</h2>
-            <p class="text-gray-500 leading-relaxed mb-6">
+        <div class="max-w-4xl mx-auto mb-6 md:mb-10">
+            <h2 class="text-2xl md:text-4xl font-black text-gray-900 mb-2 md:mb-4 tracking-tight">Tes Kepribadian</h2>
+            <p class="text-xs md:text-base text-gray-500 leading-relaxed mb-5 md:mb-8">
                 Jawab 10 pertanyaan berikut dengan jujur. Sistem akan menganalisis kepribadian Anda menggunakan algoritma Machine Learning.
             </p>
 
-            <div class="flex justify-between items-end mb-2">
-                <span class="text-sm font-semibold text-gray-700">Progres: <span id="progress-text">0</span> dari 10 pertanyaan</span>
-                <span class="text-sm font-bold text-blue-600" id="progress-percent">0%</span>
+            <div class="flex justify-between items-end mb-2 md:mb-3">
+                <span class="text-xs md:text-sm font-bold text-gray-700">Progres: <span id="progress-text">0</span> dari 10</span>
+                <span class="text-xs md:text-base font-black text-blue-600" id="progress-percent">0%</span>
             </div>
-            <div class="w-full bg-blue-100 h-2 rounded-full overflow-hidden">
-                <div id="progress-bar" class="bg-blue-500 h-full transition-all duration-500" style="width: 0%"></div>
+            <div class="w-full bg-slate-100 h-2.5 md:h-3 rounded-full overflow-hidden">
+                <div id="progress-bar" class="bg-blue-600 h-full transition-all duration-500 rounded-full" style="width: 0%"></div>
             </div>
         </div>
 
-        <form action="{{ url_for('analyze') }}" method="POST" id="quizForm">
-            <div class="max-w-4xl mx-auto space-y-6 mb-12">
+        <form action="{{ url_for('analyze') }}" method="POST" id="quizForm" onsubmit="sessionStorage.removeItem('riwayatDisimpanSesiIni');">
+            <div class="max-w-4xl mx-auto space-y-4 md:space-y-8 mb-10 md:mb-14">
                 <script>
                     const questions = [
                         "Apakah Anda merasa lebih berenergi setelah menghabiskan waktu bersama orang lain?",
@@ -144,20 +192,20 @@
                     ];
 
                     document.write(questions.map((q, i) => `
-                        <div class="bg-white p-8 rounded-2xl border border-gray-100 shadow-sm">
-                            <div class="flex items-start gap-4 mb-6">
-                                <div class="w-8 h-8 bg-blue-500 rounded-full flex-shrink-0 flex items-center justify-center text-white font-bold text-sm">
+                        <div class="bg-white p-4 md:p-10 rounded-2xl md:rounded-[2rem] border border-gray-100 shadow-sm transition-all hover:shadow-md">
+                            <div class="flex items-start gap-3 md:gap-5 mb-4 md:mb-8">
+                                <div class="w-8 h-8 md:w-10 md:h-10 bg-blue-100 text-blue-600 rounded-lg md:rounded-xl flex-shrink-0 flex items-center justify-center font-black text-sm md:text-base mt-0.5">
                                     ${i + 1}
                                 </div>
-                                <p class="text-lg font-medium text-gray-800">${q}</p>
+                                <p class="text-sm md:text-lg font-bold text-gray-800 leading-snug">${q}</p>
                             </div>
                             <input type="hidden" name="q${i+1}" id="input_q${i+1}" value="">
-                            
-                            <div class="grid grid-cols-2 gap-4">
-                                <button type="button" onclick="setVal(${i+1}, 1, this)" class="py-3 px-6 border-2 border-gray-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 text-gray-600 font-semibold transition-all btn-choice">
+
+                            <div class="grid grid-cols-2 gap-3 md:gap-6">
+                                <button type="button" onclick="setVal(${i+1}, 1, this)" class="py-2.5 md:py-4 px-4 md:px-6 border-2 border-gray-100 rounded-lg md:rounded-xl hover:border-blue-500 hover:bg-blue-50 text-gray-600 text-sm md:text-base font-bold transition-all btn-choice">
                                     Ya
                                 </button>
-                                <button type="button" onclick="setVal(${i+1}, 0, this)" class="py-3 px-6 border-2 border-gray-100 rounded-xl hover:border-blue-500 hover:bg-blue-50 text-gray-600 font-semibold transition-all btn-choice">
+                                <button type="button" onclick="setVal(${i+1}, 0, this)" class="py-2.5 md:py-4 px-4 md:px-6 border-2 border-gray-100 rounded-lg md:rounded-xl hover:border-blue-500 hover:bg-blue-50 text-gray-600 text-sm md:text-base font-bold transition-all btn-choice">
                                     Tidak
                                 </button>
                             </div>
@@ -166,32 +214,48 @@
                 </script>
             </div>
 
-            <div class="max-w-4xl mx-auto flex justify-between items-center mb-20">
-                <button type="button" onclick="location.reload()" class="px-6 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 font-medium">
-                    Mulai Ulang Tes
+            <div class="max-w-4xl mx-auto flex flex-col-reverse md:flex-row justify-between items-center mb-10 md:mb-20 gap-3 md:gap-4">
+                <button type="button" onclick="resetKuesioner()" class="w-full md:w-auto px-6 md:px-8 py-3 md:py-4 border-2 border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 font-bold transition-all text-sm md:text-base">
+                    <i class="fas fa-undo mr-2"></i> Mulai Ulang Tes
                 </button>
-                <button type="submit" id="submitBtn" class="px-10 py-3 bg-gray-400 text-white rounded-xl font-bold shadow-lg cursor-not-allowed transition-all" disabled>
-                    Submit Jawaban
+                <button type="submit" id="submitBtn" class="w-full md:w-auto px-8 md:px-12 py-3 md:py-4 bg-gray-300 text-white rounded-xl font-black shadow-lg cursor-not-allowed transition-all text-sm md:text-base" disabled>
+                    Submit Jawaban <i class="fas fa-arrow-right ml-2"></i>
                 </button>
             </div>
         </form>
     </main>
 
     <script>
-        // Inisialisasi tema saat halaman dimuat
-        window.onload = function() {
-            if (typeof applyTheme === "function") {
-                applyTheme();
-            }
-        };
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        
+        function toggleSidebar() { 
+            sidebar.classList.toggle('-translate-x-full'); 
+            sidebarOverlay.classList.toggle('hidden'); 
+        }
 
         let answered = 0;
         const answeredQuestions = new Set();
+        const autoSaveEnabled = localStorage.getItem('autoSaveEnabled') === 'enabled';
+
+        function updateProgress() {
+            const percent = (answered / 10) * 100;
+            document.getElementById('progress-bar').style.width = percent + '%';
+            document.getElementById('progress-text').innerText = answered;
+            document.getElementById('progress-percent').innerText = percent + '%';
+            
+            if(answered === 10) {
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.classList.remove('bg-gray-300', 'cursor-not-allowed');
+                submitBtn.classList.add('bg-blue-600', 'hover:bg-blue-700', 'shadow-blue-200');
+                submitBtn.removeAttribute('disabled');
+            }
+        }
 
         function setVal(qIdx, val, btn) {
             document.getElementById('input_q' + qIdx).value = val;
-            
             const parent = btn.parentElement;
+            
             const siblingButtons = parent.querySelectorAll('button');
             siblingButtons.forEach(b => b.classList.remove('btn-choice-active', 'bg-blue-600', 'text-white', 'border-blue-600'));
             
@@ -200,19 +264,44 @@
             if (!answeredQuestions.has(qIdx)) {
                 answeredQuestions.add(qIdx);
                 answered++;
-                
-                const percent = (answered / 10) * 100;
-                document.getElementById('progress-bar').style.width = percent + '%';
-                document.getElementById('progress-text').innerText = answered;
-                document.getElementById('progress-percent').innerText = percent + '%';
-                
-                if(answered === 10) {
-                    const submitBtn = document.getElementById('submitBtn');
-                    submitBtn.classList.remove('bg-gray-400', 'cursor-not-allowed');
-                    submitBtn.classList.add('bg-blue-600', 'hover:bg-blue-700');
-                    submitBtn.removeAttribute('disabled');
-                }
+                updateProgress();
             }
+
+            if (autoSaveEnabled) {
+                let savedAnswers = JSON.parse(localStorage.getItem('jawabanKuesioner') || '{}');
+                savedAnswers[qIdx] = val;
+                localStorage.setItem('jawabanKuesioner', JSON.stringify(savedAnswers));
+            }
+        }
+
+        window.onload = function() {
+            if (typeof applyTheme === "function") { 
+                applyTheme(); 
+            }
+
+            if (autoSaveEnabled) {
+                const savedAnswers = JSON.parse(localStorage.getItem('jawabanKuesioner') || '{}');
+                for (const [qIdx, val] of Object.entries(savedAnswers)) {
+                    const inputEl = document.getElementById('input_q' + qIdx);
+                    if (inputEl) {
+                        const container = inputEl.nextElementSibling;
+                        const buttons = container.querySelectorAll('.btn-choice');
+                        
+                        const btnTarget = val === 1 ? buttons[0] : buttons[1];
+                        if (btnTarget) { 
+                            setVal(parseInt(qIdx), val, btnTarget); 
+                        }
+                    }
+                }
+            } else {
+                localStorage.removeItem('jawabanKuesioner');
+            }
+        };
+
+        function resetKuesioner() {
+            localStorage.removeItem('jawabanKuesioner');
+            sessionStorage.removeItem('riwayatDisimpanSesiIni'); // Mengizinkan tes dicatat lagi
+            window.location.href = "{{ url_for('reset') }}";
         }
     </script>
 </body>

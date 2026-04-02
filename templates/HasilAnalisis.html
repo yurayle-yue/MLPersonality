@@ -16,52 +16,73 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             transition: all 0.3s ease;
         }
-        .sidebar-item-active { background-color: #3b82f6; color: white; box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2); }
-
-        .dark-mode, .dark-mode body { background-color: #0f172a !important; color: #f8fafc !important; }
-        .dark-mode aside, .dark-mode .bg-white { background-color: #1e293b !important; border-color: #334155 !important; }
-
+        
+        /* Gaya seragam Sidebar & Animasi */
+        .sidebar-item-active { background-color: #3b82f6; color: white !important; box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.2); }
         .metric-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .metric-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1); }
-
+        .metric-card:hover { transform: translateY(-8px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
+        
+        /* CM Table */
         .cm-cell { min-width: 60px; text-align: center; padding: 12px; font-weight: 700; }
         .cm-high { background-color: #dbeafe; color: #1e40af; }
         .cm-low { background-color: #fef3c7; color: #92400e; }
-        .dark-mode .cm-high { background-color: #1e3a5f; color: #93c5fd; }
-        .dark-mode .cm-low { background-color: #422006; color: #fcd34d; }
+
+        /* LOGIKA CSS MODE GELAP YANG SERAGAM */
+        .dark-mode, .dark-mode body { background-color: #0f172a !important; color: #f8fafc !important; }
+        .dark-mode aside, .dark-mode .bg-white, .dark-mode main { background-color: #1e293b !important; border-color: #334155 !important; }
+        .dark-mode h1, .dark-mode h2, .dark-mode h3, .dark-mode h4, .dark-mode h5, .dark-mode h6, 
+        .dark-mode p, .dark-mode span, .dark-mode label, .dark-mode td, .dark-mode th { color: #f8fafc !important; }
+        .dark-mode .text-gray-900, .dark-mode .text-gray-800, .dark-mode .text-gray-700, .dark-mode .text-gray-600 { color: #f8fafc !important; }
+        .dark-mode .text-gray-500 { color: #cbd5e1 !important; }
+        .dark-mode .bg-slate-50 { background-color: #334155 !important; }
+        .dark-mode .border-gray-100, .dark-mode .border-gray-200, .dark-mode div { border-color: #334155 !important; }
+        .dark-mode nav a:not(.sidebar-item-active) { color: #94a3b8 !important; }
+        .dark-mode #sidebarToggle { color: #f8fafc !important; }
+        .dark-mode .cm-high { background-color: #1e3a5f !important; color: #93c5fd !important; }
+        .dark-mode .cm-low { background-color: #422006 !important; color: #fcd34d !important; }
     </style>
 </head>
-<body class="flex min-h-screen">
+<body class="flex min-h-screen relative overflow-x-hidden">
 
-    <aside class="w-64 bg-white border-r border-gray-200 flex flex-col fixed h-full z-20">
-        <div class="p-8 flex items-center gap-3">
-            <div class="w-11 h-11 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-200">
-                <i class="fas fa-brain text-white text-xl"></i>
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-30 hidden md:hidden transition-opacity" onclick="toggleSidebar()"></div>
+
+    <aside id="sidebar" class="w-64 min-w-[256px] bg-white border-r border-gray-200 flex flex-col fixed inset-y-0 left-0 z-40 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out overflow-y-auto">
+        <div class="p-5 md:p-8 flex items-center justify-between md:justify-start gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 md:w-11 md:h-11 bg-blue-600 rounded-2xl flex items-center justify-center shadow-xl shadow-blue-200">
+                    <i class="fas fa-brain text-white text-lg md:text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-gray-800 leading-tight text-sm">ML Personality</h1>
+                    <p class="text-[10px] text-blue-500 font-extrabold uppercase tracking-widest">Analisis</p>
+                </div>
             </div>
-            <div>
-                <h1 class="font-bold text-gray-800 leading-tight text-sm">ML Personality</h1>
-                <p class="text-[10px] text-blue-500 font-extrabold uppercase tracking-widest">Analisis</p>
-            </div>
+            <button class="md:hidden text-gray-500 hover:text-gray-800" onclick="toggleSidebar()">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
 
-        <nav class="flex-1 px-4 space-y-2 mt-4">
-            <a href="{{ url_for('index') }}" class="flex items-center gap-4 px-5 py-4 text-gray-500 hover:bg-gray-50 rounded-2xl transition-all">
+        <nav class="flex-1 px-3 md:px-4 space-y-1 md:space-y-2 mt-2 md:mt-4">
+            <a href="{{ url_for('index') }}" class="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 text-gray-500 hover:bg-gray-50 rounded-xl md:rounded-2xl transition-all">
                 <i class="fas fa-layer-group"></i><span class="font-bold text-sm">Kuesioner</span>
             </a>
-            <a href="{{ url_for('hasil') }}" class="sidebar-item-active flex items-center gap-4 px-5 py-4 rounded-2xl transition-all">
+            <a href="{{ url_for('hasil') }}" class="sidebar-item-active flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 rounded-xl md:rounded-2xl transition-all">
                 <i class="fas fa-chart-pie"></i><span class="font-bold text-sm">Hasil Analisis</span>
             </a>
-            <a href="{{ url_for('tentang') }}" class="flex items-center gap-4 px-5 py-4 text-gray-500 hover:bg-gray-50 rounded-2xl transition-all">
+            <a href="{{ url_for('perbandingan') }}" class="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 text-gray-500 hover:bg-gray-50 rounded-xl md:rounded-2xl transition-all">
+                <i class="fas fa-balance-scale"></i><span class="font-bold text-sm">Perbandingan</span>
+            </a>
+            <a href="{{ url_for('tentang') }}" class="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 text-gray-500 hover:bg-gray-50 rounded-xl md:rounded-2xl transition-all">
                 <i class="fas fa-id-card"></i><span class="font-bold text-sm">Tentang</span>
             </a>
         </nav>
 
-        <div class="p-6 border-t border-gray-100">
-            <a href="{{ url_for('pengaturan') }}" class="flex items-center gap-3 px-4 py-2 text-gray-600 hover:bg-gray-50 rounded-lg text-sm transition-all mb-3">
-                <i class="fas fa-cog w-4"></i><span>Pengaturan</span>
+        <div class="p-4 md:p-6 border-t border-gray-100">
+            <a href="{{ url_for('pengaturan') }}" class="flex items-center gap-3 px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-xl text-sm transition-all mb-3">
+                <i class="fas fa-cog w-4"></i><span class="font-bold text-sm">Pengaturan</span>
             </a>
-            <div class="flex items-center gap-3 px-4 py-4 bg-slate-50 rounded-3xl mb-4">
-                <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-black ring-4 ring-blue-50">22</div>
+            <div class="flex items-center gap-3 px-3 md:px-4 py-3 md:py-4 bg-slate-50 rounded-2xl md:rounded-3xl mb-4">
+                <div class="w-9 h-9 md:w-10 md:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs font-black ring-4 ring-blue-50">22</div>
                 <div>
                     <p class="text-[12px] font-black text-gray-800 leading-none">2244002</p>
                     <span class="text-[9px] text-gray-400 font-bold uppercase">Winston Gareth</span>
@@ -73,153 +94,168 @@
         </div>
     </aside>
 
-    <main class="flex-1 ml-64 p-10">
-        {% if has_results %}
-
-        <!-- Hero: Prediction Result -->
-        <div class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-[3rem] p-16 mb-12 text-white shadow-2xl shadow-blue-200 relative overflow-hidden">
-            <div class="relative z-10">
-                <span class="px-5 py-2 bg-white/20 rounded-full text-[11px] font-black uppercase tracking-[0.3em] backdrop-blur-xl border border-white/10">Analisis Karakter Berhasil</span>
-                <h2 class="text-5xl md:text-6xl font-black mt-8 mb-8 tracking-tighter">
-                    Kepribadian Anda: <span class="text-yellow-300">{{ final_pred }}</span>
-                </h2>
-                <div class="flex flex-wrap items-center gap-6">
-                    <div class="px-7 py-3 bg-white/10 rounded-2xl backdrop-blur-2xl border border-white/20 flex items-center gap-4 shadow-xl">
-                        <div class="w-3 h-3 bg-yellow-300 rounded-full animate-pulse"></div>
-                        <span class="font-black text-lg tracking-tight">Confidence Level: {{ confidence }}%</span>
-                    </div>
-                    <div class="px-7 py-3 bg-white/10 rounded-2xl backdrop-blur-2xl border border-white/20 flex items-center gap-4">
-                        <i class="fas fa-robot text-yellow-300"></i>
-                        <span class="font-bold text-sm">Voting dari 3 Algoritma ML</span>
-                    </div>
+    <main class="flex-1 w-full ml-0 md:ml-64 p-4 md:p-10 transition-all duration-300">
+        
+        <div class="w-full flex justify-between md:justify-end items-center gap-4 mb-8 max-w-6xl mx-auto">
+            <button id="sidebarToggle" class="md:hidden text-gray-800 focus:outline-none" onclick="toggleSidebar()">
+                <i class="fas fa-bars text-2xl"></i>
+            </button>
+            <div class="flex items-center gap-4">
+                <div class="relative p-2 text-orange-400 bg-orange-50 rounded-lg cursor-default">
+                    <i class="fas fa-bell"></i>
+                    <span class="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
                 </div>
+                <div class="hidden md:flex w-10 h-10 bg-blue-500 rounded-full items-center justify-center text-white font-bold shadow-md">22</div>
             </div>
-            <i class="fas fa-robot absolute -right-20 -bottom-20 text-[350px] text-white/5 -rotate-12"></i>
         </div>
 
-        <!-- Per-model predictions -->
-        <div class="mb-14">
-            <div class="flex items-center gap-4 mb-10">
-                <div class="w-2 h-10 bg-blue-600 rounded-full"></div>
-                <h3 class="text-2xl font-black text-gray-800 tracking-tight">Prediksi Tiap Algoritma</h3>
+        <div class="max-w-6xl mx-auto">
+            
+            <div class="mb-5 md:mb-8">
+                <h2 class="text-2xl md:text-4xl font-black text-gray-900 mb-2 md:mb-4 tracking-tight">Hasil Analisis</h2>
+                <p class="text-xs md:text-base text-gray-500 leading-relaxed mb-5 md:mb-8">
+                    Rincian prediksi tipe kepribadian Anda berdasarkan algoritma Machine Learning.
+                </p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-                {% for name, pred in prediction.predictions.items() %}
-                <div class="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm metric-card">
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-2 h-8 rounded-full {% if name == 'KNN' %}bg-blue-500{% elif name == 'SVM' %}bg-indigo-600{% else %}bg-purple-600{% endif %}"></div>
-                        <h4 class="font-black text-xl text-gray-800">{{ name }}</h4>
+
+            {% if has_results %}
+
+            <div class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl md:rounded-[3rem] p-5 md:p-16 mb-8 md:mb-12 text-white shadow-2xl shadow-blue-200 relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="px-3 md:px-5 py-1.5 md:py-2 bg-white/20 rounded-full text-[9px] md:text-[11px] font-black uppercase tracking-[0.2em] md:tracking-[0.3em] backdrop-blur-xl border border-white/10">Analisis Karakter Berhasil</span>
+                    <h2 class="text-2xl md:text-6xl font-black mt-4 md:mt-8 mb-4 md:mb-8 tracking-tighter">
+                        Kepribadian Anda: <span class="text-yellow-300">{{ final_pred }}</span>
+                    </h2>
+                    <div class="flex flex-col md:flex-row items-start md:items-center gap-3 md:gap-6">
+                        <div class="px-4 md:px-7 py-2.5 md:py-3 bg-white/10 rounded-xl md:rounded-2xl backdrop-blur-2xl border border-white/20 flex items-center gap-3 md:gap-4 shadow-xl">
+                            <div class="w-2.5 h-2.5 md:w-3 md:h-3 bg-yellow-300 rounded-full animate-pulse"></div>
+                            <span class="font-black text-sm md:text-lg tracking-tight">Confidence Level: {{ confidence }}%</span>
+                        </div>
+                        <div class="px-4 md:px-7 py-2.5 md:py-3 bg-white/10 rounded-xl md:rounded-2xl backdrop-blur-2xl border border-white/20 flex items-center gap-3 md:gap-4">
+                            <i class="fas fa-robot text-yellow-300"></i>
+                            <span class="font-bold text-xs md:text-sm">Voting dari 3 Algoritma ML</span>
+                        </div>
                     </div>
-                    <p class="text-3xl font-black {% if pred == 'Extrovert' %}text-blue-600{% else %}text-purple-600{% endif %} mb-4">{{ pred }}</p>
-                    {% set model_probs = prediction.probabilities[name] %}
-                    {% for label, prob in model_probs.items() %}
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="text-xs text-gray-500 font-bold">{{ label }}</span>
-                        <span class="text-sm font-black text-gray-700">{{ prob }}%</span>
-                    </div>
-                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden mb-3">
-                        <div class="{% if label == 'Extrovert' %}bg-blue-500{% else %}bg-purple-500{% endif %} h-full rounded-full" style="width: {{ prob }}%"></div>
+                </div>
+                <i class="fas fa-robot absolute -right-5 -bottom-5 md:-right-20 md:-bottom-20 text-[120px] md:text-[350px] text-white/5 -rotate-12"></i>
+            </div>
+
+            <div class="mb-8 md:mb-14">
+                <div class="flex items-center gap-3 md:gap-4 mb-6 md:mb-10">
+                    <div class="w-1.5 md:w-2 h-8 md:h-10 bg-blue-600 rounded-full"></div>
+                    <h3 class="text-lg md:text-2xl font-black text-gray-800 tracking-tight">Prediksi Tiap Algoritma</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-8 md:mb-12">
+                    {% for name, pred in prediction.predictions.items() %}
+                    <div class="bg-white p-4 md:p-8 rounded-2xl md:rounded-[2rem] border border-gray-100 shadow-sm metric-card">
+                        <div class="flex items-center gap-3 mb-4 md:mb-6">
+                            <div class="w-1.5 md:w-2 h-6 md:h-8 rounded-full {% if name == 'KNN' %}bg-blue-500{% elif name == 'SVM' %}bg-indigo-600{% else %}bg-purple-600{% endif %}"></div>
+                            <h4 class="font-black text-base md:text-xl text-gray-800">{{ name }}</h4>
+                        </div>
+                        <p class="text-2xl md:text-3xl font-black {% if pred == 'Extrovert' %}text-blue-600{% else %}text-purple-600{% endif %} mb-3 md:mb-4">{{ pred }}</p>
+                        {% set model_probs = prediction.probabilities[name] %}
+                        {% for label, prob in model_probs.items() %}
+                        <div class="flex justify-between items-center mb-1.5 md:mb-2">
+                            <span class="text-[11px] md:text-xs text-gray-500 font-bold">{{ label }}</span>
+                            <span class="text-xs md:text-sm font-black text-gray-700">{{ prob }}%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 h-1.5 md:h-2 rounded-full overflow-hidden mb-2.5 md:mb-3">
+                            <div class="{% if label == 'Extrovert' %}bg-blue-500{% else %}bg-purple-500{% endif %} h-full rounded-full" style="width: {{ prob }}%"></div>
+                        </div>
+                        {% endfor %}
                     </div>
                     {% endfor %}
                 </div>
-                {% endfor %}
             </div>
-        </div>
 
-        <!-- Model Accuracy Metrics -->
-        <div class="mb-14">
-            <div class="flex items-center gap-4 mb-10">
-                <div class="w-2 h-10 bg-indigo-600 rounded-full"></div>
-                <h3 class="text-2xl font-black text-gray-800 tracking-tight">Metrik Akurasi Algoritma</h3>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-                {% for res in results %}
-                <div class="bg-white p-10 rounded-[2.5rem] border border-gray-100 shadow-sm metric-card">
-                    <div class="flex items-center justify-between mb-10">
-                        <div class="flex items-center gap-4">
-                            <div class="w-2 h-10 rounded-full {% if res.Model == 'KNN' %}bg-blue-500{% elif res.Model == 'SVM' %}bg-indigo-600{% else %}bg-purple-600{% endif %}"></div>
-                            <h4 class="font-black text-2xl text-gray-800">{{ res.Model }}</h4>
-                        </div>
-                        <i class="fas fa-bolt text-slate-200 text-2xl"></i>
-                    </div>
-                    <div class="space-y-8">
-                        <div class="flex justify-between items-end">
-                            <span class="text-xs text-gray-400 font-black uppercase tracking-widest">Accuracy</span>
-                            <span class="font-black text-4xl text-blue-600">{{ "%.0f%%"|format(res.Accuracy * 100) }}</span>
-                        </div>
-                        <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
-                            <div class="bg-blue-600 h-full rounded-full" style="width: {{ res.Accuracy * 100 }}%"></div>
-                        </div>
-                        <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-50">
-                            <div>
-                                <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">Precision</p>
-                                <p class="font-black text-gray-800 text-lg">{{ "%.1f%%"|format(res.Precision * 100) }}</p>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">Recall</p>
-                                <p class="font-black text-gray-800 text-lg">{{ "%.1f%%"|format(res.Recall * 100) }}</p>
-                            </div>
-                            <div>
-                                <p class="text-[10px] text-gray-400 uppercase font-black tracking-widest mb-1">F1-Score</p>
-                                <p class="font-black text-gray-800 text-lg">{{ "%.1f%%"|format(res.F1 * 100) }}</p>
-                            </div>
-                        </div>
-                    </div>
+            <div class="mb-8 md:mb-14">
+                <div class="flex items-center gap-3 md:gap-4 mb-6 md:mb-10">
+                    <div class="w-1.5 md:w-2 h-8 md:h-10 bg-indigo-600 rounded-full"></div>
+                    <h3 class="text-lg md:text-2xl font-black text-gray-800 tracking-tight">Metrik Akurasi Algoritma</h3>
                 </div>
-                {% endfor %}
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-10">
+                    {% for res in results %}
+                    <div class="bg-white p-5 md:p-10 rounded-2xl md:rounded-[2.5rem] border border-gray-100 shadow-sm metric-card">
+                        <div class="flex items-center justify-between mb-6 md:mb-10">
+                            <div class="flex items-center gap-3 md:gap-4">
+                                <div class="w-1.5 md:w-2 h-8 md:h-10 rounded-full {% if res.Model == 'KNN' %}bg-blue-500{% elif res.Model == 'SVM' %}bg-indigo-600{% else %}bg-purple-600{% endif %}"></div>
+                                <h4 class="font-black text-lg md:text-2xl text-gray-800">{{ res.Model }}</h4>
+                            </div>
+                            <i class="fas fa-bolt text-slate-200 text-xl md:text-2xl"></i>
+                        </div>
+                        <div class="space-y-5 md:space-y-8">
+                            <div class="flex justify-between items-end">
+                                <span class="text-[10px] md:text-xs text-gray-400 font-black uppercase tracking-widest">Accuracy</span>
+                                <span class="font-black text-2xl md:text-4xl text-blue-600">{{ "%.0f%%"|format(res.Accuracy * 100) }}</span>
+                            </div>
+                            <div class="w-full bg-slate-100 h-2.5 md:h-3 rounded-full overflow-hidden">
+                                <div class="bg-blue-600 h-full rounded-full" style="width: {{ res.Accuracy * 100 }}%"></div>
+                            </div>
+                            <div class="grid grid-cols-3 gap-2 md:gap-4 pt-4 md:pt-6 border-t border-slate-50">
+                                <div>
+                                    <p class="text-[10px] md:text-[11px] text-gray-400 uppercase font-black tracking-wider md:tracking-widest mb-1">Precision</p>
+                                    <p class="font-black text-gray-800 text-sm md:text-lg">{{ "%.1f%%"|format(res.Precision * 100) }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] md:text-[11px] text-gray-400 uppercase font-black tracking-wider md:tracking-widest mb-1">Recall</p>
+                                    <p class="font-black text-gray-800 text-sm md:text-lg">{{ "%.1f%%"|format(res.Recall * 100) }}</p>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] md:text-[11px] text-gray-400 uppercase font-black tracking-wider md:tracking-widest mb-1">F1-Score</p>
+                                    <p class="font-black text-gray-800 text-sm md:text-lg">{{ "%.1f%%"|format(res.F1 * 100) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-12 mb-8 md:mb-12">
+                <div class="bg-white p-4 md:p-10 rounded-2xl md:rounded-[3rem] border border-gray-100 shadow-sm overflow-x-auto">
+                    <h3 class="font-black text-gray-800 mb-4 md:mb-8 flex items-center gap-3 md:gap-4 text-sm md:text-base">
+                        <i class="fas fa-chart-bar text-blue-500"></i> Perbandingan Akurasi
+                    </h3>
+                    <div class="min-w-[280px]"><canvas id="accuracyChart" height="280"></canvas></div>
+                </div>
+
+                <div class="bg-white p-4 md:p-10 rounded-2xl md:rounded-[3rem] border border-gray-100 shadow-sm overflow-x-auto">
+                    <h3 class="font-black text-gray-800 mb-4 md:mb-8 flex items-center gap-3 md:gap-4 text-sm md:text-base">
+                        <i class="fas fa-chart-pie text-indigo-500"></i> Probabilitas Prediksi Dataset
+                    </h3>
+                    <div class="min-w-[280px]"><canvas id="probChart" height="280"></canvas></div>
+                </div>
+
+                <div class="bg-white p-4 md:p-10 rounded-2xl md:rounded-[3rem] border border-gray-100 shadow-sm overflow-x-auto">
+                    <h3 class="font-black text-gray-800 mb-4 md:mb-8 flex items-center gap-3 md:gap-4 text-sm md:text-base">
+                        <i class="fas fa-spider text-purple-500"></i> Radar Fitur Anda
+                    </h3>
+                    <div class="min-w-[280px]"><canvas id="radarChart" height="280"></canvas></div>
+                </div>
+
+                <div class="bg-white p-4 md:p-10 rounded-2xl md:rounded-[3rem] border border-gray-100 shadow-sm overflow-x-auto">
+                    <h3 class="font-black text-gray-800 mb-4 md:mb-8 flex items-center gap-3 md:gap-4 text-sm md:text-base">
+                        <i class="fas fa-th text-green-500"></i> Confusion Matrix
+                    </h3>
+                    <div id="cmContainer" class="space-y-4 md:space-y-6 min-w-[280px]"></div>
+                </div>
+            </div>
+
+            {% else %}
+            <div class="flex flex-col items-center justify-center min-h-[50vh] md:min-h-[60vh] text-center px-4">
+                <div class="w-24 h-24 md:w-40 md:h-40 bg-blue-50 rounded-[2rem] md:rounded-[3rem] flex items-center justify-center mb-6 md:mb-10 border-4 border-white shadow-2xl">
+                    <i class="fas fa-chart-line text-blue-300 text-4xl md:text-6xl"></i>
+                </div>
+                <h2 class="text-2xl md:text-4xl font-black text-gray-800 mb-3 md:mb-5">Hasil Masih Terkunci</h2>
+                <p class="text-gray-400 mb-8 md:mb-12 max-w-md font-bold text-sm md:text-lg leading-relaxed">
+                    Selesaikan pengisian kuesioner Anda untuk memproses data menggunakan algoritma Machine Learning.
+                </p>
+                <a href="{{ url_for('index') }}" class="bg-blue-600 text-white px-8 md:px-14 py-3.5 md:py-5 rounded-2xl md:rounded-[2rem] font-black hover:bg-blue-700 transition-all shadow-2xl shadow-blue-200 active:scale-95 text-sm md:text-base">
+                    Mulai Tes Kepribadian
+                </a>
+            </div>
+            {% endif %}
         </div>
-
-        <!-- Charts Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
-            <!-- Accuracy Comparison Chart -->
-            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
-                <h3 class="font-black text-gray-800 mb-8 flex items-center gap-4">
-                    <i class="fas fa-chart-bar text-blue-500"></i> Perbandingan Akurasi
-                </h3>
-                <canvas id="accuracyChart" height="280"></canvas>
-            </div>
-
-            <!-- Probability Chart -->
-            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
-                <h3 class="font-black text-gray-800 mb-8 flex items-center gap-4">
-                    <i class="fas fa-chart-pie text-indigo-500"></i> Probabilitas Prediksi Dataset
-                </h3>
-                <canvas id="probChart" height="280"></canvas>
-            </div>
-
-            <!-- Radar Chart: User Features -->
-            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
-                <h3 class="font-black text-gray-800 mb-8 flex items-center gap-4">
-                    <i class="fas fa-spider text-purple-500"></i> Radar Fitur Anda
-                </h3>
-                <canvas id="radarChart" height="280"></canvas>
-            </div>
-
-            <!-- Confusion Matrices -->
-            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
-                <h3 class="font-black text-gray-800 mb-8 flex items-center gap-4">
-                    <i class="fas fa-th text-green-500"></i> Confusion Matrix
-                </h3>
-                <div id="cmContainer" class="space-y-6"></div>
-            </div>
-        </div>
-
-        {% else %}
-        <!-- No Results State -->
-        <div class="flex flex-col items-center justify-center min-h-[75vh] text-center">
-            <div class="w-40 h-40 bg-blue-50 rounded-[3rem] flex items-center justify-center mb-10 border-4 border-white shadow-2xl">
-                <i class="fas fa-chart-line text-blue-300 text-6xl"></i>
-            </div>
-            <h2 class="text-4xl font-black text-gray-800 mb-5">Hasil Masih Terkunci</h2>
-            <p class="text-gray-400 mb-12 max-w-md font-bold text-lg leading-relaxed">
-                Selesaikan pengisian kuesioner Anda untuk memproses data menggunakan algoritma Machine Learning.
-            </p>
-            <a href="{{ url_for('index') }}" class="bg-blue-600 text-white px-14 py-5 rounded-[2rem] font-black hover:bg-blue-700 transition-all shadow-2xl shadow-blue-200 active:scale-95">
-                Mulai Tes Kepribadian
-            </a>
-        </div>
-        {% endif %}
     </main>
 
     {% if has_results %}
@@ -237,43 +273,18 @@
 
         Chart.defaults.color = textColor;
 
-        // 1. Accuracy Comparison Bar Chart
+        // 1. Accuracy Chart
         new Chart(document.getElementById('accuracyChart'), {
             type: 'bar',
             data: {
                 labels: results.map(r => r.Model),
                 datasets: [
-                    {
-                        label: 'Accuracy',
-                        data: results.map(r => (r.Accuracy * 100).toFixed(1)),
-                        backgroundColor: ['#3b82f6', '#6366f1', '#8b5cf6'],
-                        borderRadius: 12,
-                        barPercentage: 0.6
-                    },
-                    {
-                        label: 'Precision',
-                        data: results.map(r => (r.Precision * 100).toFixed(1)),
-                        backgroundColor: ['#60a5fa', '#818cf8', '#a78bfa'],
-                        borderRadius: 12,
-                        barPercentage: 0.6
-                    },
-                    {
-                        label: 'F1-Score',
-                        data: results.map(r => (r.F1 * 100).toFixed(1)),
-                        backgroundColor: ['#93c5fd', '#a5b4fc', '#c4b5fd'],
-                        borderRadius: 12,
-                        barPercentage: 0.6
-                    }
+                    { label: 'Accuracy', data: results.map(r => (r.Accuracy * 100).toFixed(1)), backgroundColor: ['#3b82f6', '#6366f1', '#8b5cf6'], borderRadius: 12, barPercentage: 0.6 },
+                    { label: 'Precision', data: results.map(r => (r.Precision * 100).toFixed(1)), backgroundColor: ['#60a5fa', '#818cf8', '#a78bfa'], borderRadius: 12, barPercentage: 0.6 },
+                    { label: 'F1-Score', data: results.map(r => (r.F1 * 100).toFixed(1)), backgroundColor: ['#93c5fd', '#a5b4fc', '#c4b5fd'], borderRadius: 12, barPercentage: 0.6 }
                 ]
             },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: true, max: 100, grid: { color: gridColor } },
-                    x: { grid: { display: false } }
-                },
-                plugins: { legend: { position: 'bottom' } }
-            }
+            options: { responsive: true, scales: { y: { beginAtZero: true, max: 100, grid: { color: gridColor } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } }
         });
 
         // 2. Probability Chart
@@ -285,85 +296,53 @@
                 datasets: classLabels.map((label, i) => ({
                     label: label,
                     data: modelNames.map(m => probabilities[m][i]),
-                    backgroundColor: i === 0 ? '#3b82f6' : '#8b5cf6',
-                    borderRadius: 8,
-                    barPercentage: 0.7
+                    backgroundColor: i === 0 ? '#3b82f6' : '#8b5cf6', borderRadius: 8, barPercentage: 0.7
                 }))
             },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: true, max: 100, grid: { color: gridColor },
-                         ticks: { callback: v => v + '%' } },
-                    x: { grid: { display: false } }
-                },
-                plugins: { legend: { position: 'bottom' } }
-            }
+            options: { responsive: true, scales: { y: { beginAtZero: true, max: 100, grid: { color: gridColor }, ticks: { callback: v => v + '%' } }, x: { grid: { display: false } } }, plugins: { legend: { position: 'bottom' } } }
         });
 
-        // 3. Radar Chart - User Features
+        // 3. Radar Chart
         const featureLabels = Object.keys(userFeatures);
         const featureValues = Object.values(userFeatures);
         new Chart(document.getElementById('radarChart'), {
             type: 'radar',
             data: {
                 labels: featureLabels.map(l => l.replace(/_/g, ' ')),
-                datasets: [{
-                    label: 'Skor Fitur Anda',
-                    data: featureValues,
-                    backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                    borderColor: '#3b82f6',
-                    borderWidth: 2,
-                    pointBackgroundColor: '#3b82f6',
-                    pointRadius: 5
-                }]
+                datasets: [{ label: 'Skor Fitur Anda', data: featureValues, backgroundColor: 'rgba(59, 130, 246, 0.2)', borderColor: '#3b82f6', borderWidth: 2, pointBackgroundColor: '#3b82f6', pointRadius: 5 }]
             },
-            options: {
-                responsive: true,
-                scales: {
-                    r: {
-                        beginAtZero: true,
-                        grid: { color: gridColor },
-                        angleLines: { color: gridColor },
-                        pointLabels: { font: { size: 11, weight: 'bold' } }
-                    }
-                },
-                plugins: { legend: { position: 'bottom' } }
-            }
+            options: { responsive: true, scales: { r: { beginAtZero: true, grid: { color: gridColor }, angleLines: { color: gridColor }, pointLabels: { font: { size: 11, weight: 'bold' } } } }, plugins: { legend: { position: 'bottom' } } }
         });
 
-        // 4. Confusion Matrices as HTML Tables
+        // 4. CM Table
         const cmContainer = document.getElementById('cmContainer');
-        const cmColors = { KNN: 'blue', SVM: 'indigo', 'Naive Bayes': 'purple' };
-
         Object.entries(cms).forEach(([name, matrix]) => {
             const maxVal = Math.max(...matrix.flat());
-            let html = `
-                <div class="mb-4">
-                    <h4 class="font-bold text-sm text-gray-600 mb-3">${name}</h4>
-                    <table class="w-full border-collapse rounded-xl overflow-hidden">
-                        <thead>
-                            <tr>
-                                <th class="cm-cell text-xs text-gray-400"></th>
-                                ${classLabels.map(l => `<th class="cm-cell text-xs text-gray-400 font-bold">Pred: ${l}</th>`).join('')}
-                            </tr>
-                        </thead>
-                        <tbody>`;
+            let html = `<div class="mb-4"><h4 class="font-bold text-sm text-gray-600 mb-3">${name}</h4><table class="w-full border-collapse rounded-xl overflow-hidden"><thead><tr><th class="cm-cell text-xs text-gray-400"></th>${classLabels.map(l => `<th class="cm-cell text-xs text-gray-400 font-bold">Pred: ${l}</th>`).join('')}</tr></thead><tbody>`;
             matrix.forEach((row, i) => {
                 html += `<tr><td class="cm-cell text-xs text-gray-400 font-bold">Actual: ${classLabels[i]}</td>`;
-                row.forEach(val => {
-                    const isHigh = val >= maxVal * 0.5;
-                    html += `<td class="cm-cell ${isHigh ? 'cm-high' : 'cm-low'} text-lg">${val}</td>`;
-                });
+                row.forEach(val => { const isHigh = val >= maxVal * 0.5; html += `<td class="cm-cell ${isHigh ? 'cm-high' : 'cm-low'} text-lg">${val}</td>`; });
                 html += '</tr>';
             });
             html += '</tbody></table></div>';
             cmContainer.innerHTML += html;
         });
+
+        // --- LOGIKA MENYIMPAN RIWAYAT TES ---
+        const riwayatKey = 'riwayatTes';
+        let riwayat = JSON.parse(localStorage.getItem(riwayatKey) || '[]');
+        if (!sessionStorage.getItem('riwayatDisimpanSesiIni')) {
+            riwayat.push({ prediksi: "{{ final_pred }}", confidence: "{{ confidence }}", tanggal: new Date().toLocaleString('id-ID') });
+            localStorage.setItem(riwayatKey, JSON.stringify(riwayat));
+            sessionStorage.setItem('riwayatDisimpanSesiIni', 'true');
+        }
     </script>
     {% endif %}
 
     <script>
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        function toggleSidebar() { sidebar.classList.toggle('-translate-x-full'); sidebarOverlay.classList.toggle('hidden'); }
         window.onload = function() { if (typeof applyTheme === "function") applyTheme(); };
     </script>
 </body>

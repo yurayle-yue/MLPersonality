@@ -6,16 +6,20 @@ import json
 import joblib
 from collections import Counter
 
-app = Flask(__name__)
+# Tentukan absolute path dari direktori app.py berada (Penting untuk Vercel)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+API_DIR = os.path.join(BASE_DIR, 'api')
+TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
+# Inisialisasi Flask dengan path eksplisit
+app = Flask(__name__, template_folder=TEMPLATE_DIR, static_folder=STATIC_DIR)
 app.secret_key = os.environ.get('SECRET_KEY', 'ml_personality_secret_key_2244002')
 
 USER_DATA = {
     "admin": "12345",
     "2244002": "winston"
 }
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-API_DIR = os.path.join(BASE_DIR, 'api')
 
 # --- Load pre-trained models and metrics at startup ---
 scaler = joblib.load(os.path.join(API_DIR, 'scaler.pkl'))
@@ -37,18 +41,6 @@ FEATURE_NAMES = ['Time_spent_Alone', 'Stage_fear', 'Social_event_attendance',
 def predict_from_answers(answers):
     """Predict personality from 10 binary questionnaire answers using pre-trained models."""
     q = [int(a) for a in answers]
-
-    # Map 10 binary questions to 7 dataset features
-    # Q1: Energi setelah bersama orang (extrovert+)
-    # Q2: Suka kerja tim (extrovert+)
-    # Q3: Mudah memulai percakapan (extrovert+)
-    # Q4: Nyaman jadi pusat perhatian (extrovert+, no stage fear)
-    # Q5: Suka waktu luang dengan teman (extrovert+)
-    # Q6: Berpikir dengan keras (extrovert+)
-    # Q7: Lelah setelah acara sosial (introvert+, drained)
-    # Q8: Suka merencanakan detail (introvert+)
-    # Q9: Produktif di lingkungan tenang (introvert+)
-    # Q10: Suka mendengarkan daripada bicara (introvert+)
 
     time_alone = round(((1 - q[0]) + q[7] + q[8] + q[9]) / 4 * 10, 1)
     stage_fear = 1 if q[3] == 0 else 0       # Yes(1) if NOT comfortable
@@ -159,6 +151,41 @@ def hasil():
         import traceback
         traceback.print_exc()
         return render_template('HasilAnalisis.html', has_results=False)
+
+
+@app.route('/reset')
+def reset():
+    """Route untuk mereset sesi kuesioner dan memulai ulang"""
+    session.pop('answers', None)
+    session.pop('analyzed', None)
+    return redirect(url_for('index'))
+
+
+@app.route('/perbandingan')
+def perbandingan():
+    if not session.get('logged_in'):
+        return redirect(url_for('login'))
+
+    if not session.get('analyzed'):
+        return render_template('Perbandingan.html', has_results=False)
+
+    try:
+        answers = session.get('answers', [0] * 10)
+        prediction = predict_from_answers(answers)
+
+        return render_template('Perbandingan.html',
+            has_results=True,
+            answers=answers,
+            results=ml_metrics['results'],
+            prediction=prediction,
+            final_pred=prediction['final'],
+            confidence=prediction['confidence']
+        )
+    except Exception as e:
+        print(f"Error: {e}")
+        import traceback
+        traceback.print_exc()
+        return render_template('Perbandingan.html', has_results=False)
 
 
 @app.route('/tentang')
