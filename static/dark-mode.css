@@ -1,0 +1,374 @@
+/* =====================================================
+   DARK MODE CSS TERPUSAT — SATU SUMBER KEBENARAN
+   File ini harus di-load SETELAH Tailwind CDN
+   ===================================================== */
+
+/* ---- Transisi Halus ---- */
+body, aside, main, div, nav, a, .bg-white, table, thead, tbody, tr, td, th,
+input, button, label, select, textarea {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ============================================
+   1. LATAR BELAKANG UTAMA
+   ============================================ */
+.dark-mode,
+.dark-mode body {
+    background-color: #0f172a !important;
+    color: #e2e8f0 !important;
+}
+
+.dark-mode main {
+    background-color: #0f172a !important;
+}
+
+/* ============================================
+   2. SIDEBAR
+   ============================================ */
+.dark-mode aside {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+.dark-mode nav a:not(.sidebar-item-active) {
+    color: #94a3b8 !important;
+}
+
+.dark-mode nav a:not(.sidebar-item-active):hover {
+    background-color: #334155 !important;
+}
+
+.dark-mode #sidebarToggle {
+    color: #e2e8f0 !important;
+}
+
+.dark-mode aside .bg-slate-50,
+.dark-mode aside .bg-gray-50 {
+    background-color: #0f172a !important;
+}
+
+.dark-mode aside .ring-blue-50 {
+    --tw-ring-color: #1e3a5f !important;
+}
+
+.dark-mode a[href*="logout"]:hover {
+    background-color: #3b1a1a !important;
+}
+
+/* ============================================
+   3. CARD / KOTAK KONTEN (bg-white)
+   ============================================ */
+.dark-mode .bg-white {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* ============================================
+   4. TEKS
+   ============================================ */
+.dark-mode h1, .dark-mode h2, .dark-mode h3,
+.dark-mode h4, .dark-mode h5, .dark-mode h6 {
+    color: #f1f5f9 !important;
+}
+
+.dark-mode p, .dark-mode label, .dark-mode span,
+.dark-mode td, .dark-mode th {
+    color: #e2e8f0 !important;
+}
+
+.dark-mode .text-gray-900,
+.dark-mode .text-gray-800 {
+    color: #f1f5f9 !important;
+}
+
+.dark-mode .text-gray-700,
+.dark-mode .text-gray-600 {
+    color: #cbd5e1 !important;
+}
+
+.dark-mode .text-gray-500 {
+    color: #94a3b8 !important;
+}
+
+.dark-mode .text-gray-400 {
+    color: #64748b !important;
+}
+
+.dark-mode .text-gray-300 {
+    color: #475569 !important;
+}
+
+/* ============================================
+   5. BACKGROUND UTILITY CLASSES
+   ============================================ */
+.dark-mode .bg-slate-50,
+.dark-mode .bg-gray-50 {
+    background-color: #334155 !important;
+}
+
+.dark-mode .bg-slate-100,
+.dark-mode .bg-gray-100 {
+    background-color: #334155 !important;
+}
+
+.dark-mode .bg-blue-50 {
+    background-color: #1e293b !important;
+}
+
+.dark-mode .bg-orange-50 {
+    background-color: #3d2e0f !important;
+}
+
+/* Badge / Tag backgrounds */
+.dark-mode .bg-blue-100 {
+    background-color: #1e3a5f !important;
+    color: #93c5fd !important;
+}
+
+.dark-mode .bg-indigo-100 {
+    background-color: #272258 !important;
+    color: #a5b4fc !important;
+}
+
+.dark-mode .bg-purple-100 {
+    background-color: #2e1a47 !important;
+    color: #c4b5fd !important;
+}
+
+.dark-mode .bg-green-100 {
+    background-color: #14332a !important;
+    color: #86efac !important;
+}
+
+.dark-mode .bg-red-100 {
+    background-color: #3b1a1a !important;
+    color: #fca5a5 !important;
+}
+
+.dark-mode .bg-amber-100,
+.dark-mode .bg-yellow-100 {
+    background-color: #3d2e0f !important;
+    color: #fcd34d !important;
+}
+
+.dark-mode .bg-green-50 {
+    background-color: #0f2922 !important;
+}
+
+.dark-mode .bg-amber-50 {
+    background-color: #2d220a !important;
+}
+
+.dark-mode .bg-red-50 {
+    background-color: #2d1515 !important;
+}
+
+/* ============================================
+   6. BORDER
+   ============================================ */
+.dark-mode .border-gray-100,
+.dark-mode .border-gray-200,
+.dark-mode .border-gray-50,
+.dark-mode .border-gray-300 {
+    border-color: #334155 !important;
+}
+
+.dark-mode .border-red-100 {
+    border-color: #5c2020 !important;
+}
+
+.dark-mode .border-t,
+.dark-mode .border-b,
+.dark-mode .border-r,
+.dark-mode .border-l {
+    border-color: #334155 !important;
+}
+
+/* ============================================
+   7. TABEL
+   ============================================ */
+.dark-mode table {
+    border-color: #334155 !important;
+}
+
+.dark-mode thead tr {
+    border-color: #475569 !important;
+}
+
+.dark-mode tbody tr {
+    border-color: #1e293b !important;
+}
+
+.dark-mode tbody tr:hover {
+    background-color: #334155 !important;
+}
+
+.dark-mode tr.bg-slate-50 td {
+    background-color: #0f172a !important;
+}
+
+/* ============================================
+   8. INPUT / FORM
+   ============================================ */
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+    background-color: #0f172a !important;
+    border-color: #475569 !important;
+    color: #f1f5f9 !important;
+}
+
+.dark-mode input::placeholder {
+    color: #64748b !important;
+}
+
+.dark-mode input:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2) !important;
+}
+
+/* Toggle switch track */
+.dark-mode .bg-gray-200 {
+    background-color: #475569 !important;
+}
+
+/* ============================================
+   9. MODAL
+   ============================================ */
+.dark-mode #modalKonfirmasi > div,
+.dark-mode [id*="modal"] > div {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+}
+
+/* Tombol "Tidak" di modal */
+.dark-mode .bg-\[\#fcfcfc\] {
+    background-color: #334155 !important;
+    color: #e2e8f0 !important;
+    border-color: #475569 !important;
+}
+
+/* ============================================
+   10. NOTIFIKASI PANEL (Dropdown Bell)
+   ============================================ */
+.dark-mode #notifPanel {
+    background-color: #1e293b !important;
+    border-color: #334155 !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
+}
+
+.dark-mode .notif-item:hover {
+    background-color: #334155 !important;
+}
+
+/* ============================================
+   11. CONFUSION MATRIX
+   ============================================ */
+.dark-mode .cm-high {
+    background-color: #1e3a5f !important;
+    color: #93c5fd !important;
+}
+
+.dark-mode .cm-low {
+    background-color: #422006 !important;
+    color: #fcd34d !important;
+}
+
+/* ============================================
+   12. GRADIENT BANNER SHADOWS
+   ============================================ */
+.dark-mode .shadow-blue-200 {
+    --tw-shadow-color: rgba(30, 58, 138, 0.3) !important;
+    box-shadow: 0 25px 50px -12px rgba(30, 58, 138, 0.3) !important;
+}
+
+.dark-mode .shadow-green-200 {
+    --tw-shadow-color: rgba(20, 83, 45, 0.3) !important;
+    box-shadow: 0 25px 50px -12px rgba(20, 83, 45, 0.3) !important;
+}
+
+/* ============================================
+   13. PROGRESS BAR
+   ============================================ */
+.dark-mode .bg-slate-100 {
+    background-color: #1e293b !important;
+}
+
+/* ============================================
+   14. SCROLLBAR
+   ============================================ */
+.dark-mode ::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dark-mode ::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb {
+    background: #475569;
+    border-radius: 3px;
+}
+
+.dark-mode ::-webkit-scrollbar-thumb:hover {
+    background: #64748b;
+}
+
+/* ============================================
+   15. WARNA TEKS BERWARNA (tetap cerah)
+   ============================================ */
+.dark-mode .text-blue-600 { color: #60a5fa !important; }
+.dark-mode .text-blue-700 { color: #93c5fd !important; }
+.dark-mode .text-blue-500 { color: #60a5fa !important; }
+.dark-mode .text-indigo-600 { color: #818cf8 !important; }
+.dark-mode .text-purple-600 { color: #a78bfa !important; }
+.dark-mode .text-purple-700 { color: #c4b5fd !important; }
+.dark-mode .text-green-500 { color: #4ade80 !important; }
+.dark-mode .text-green-700 { color: #86efac !important; }
+.dark-mode .text-red-500 { color: #f87171 !important; }
+.dark-mode .text-red-600 { color: #f87171 !important; }
+.dark-mode .text-red-400 { color: #fca5a5 !important; }
+.dark-mode .text-amber-500 { color: #fbbf24 !important; }
+.dark-mode .text-orange-400 { color: #fb923c !important; }
+.dark-mode .text-yellow-300 { color: #fde047 !important; }
+
+/* ============================================
+   16. GRADIENT BANNER — teks tetap putih
+   ============================================ */
+.dark-mode [class*="from-blue-600"] span,
+.dark-mode [class*="from-blue-600"] h2,
+.dark-mode [class*="from-blue-600"] p,
+.dark-mode [class*="from-blue-600"] i,
+.dark-mode [class*="from-blue-600"] div,
+.dark-mode [class*="from-green-600"] span,
+.dark-mode [class*="from-green-600"] h2,
+.dark-mode [class*="from-green-600"] p,
+.dark-mode [class*="from-green-600"] i,
+.dark-mode [class*="from-green-600"] div {
+    color: inherit !important;
+    border-color: inherit !important;
+    background-color: transparent !important;
+}
+
+/* ============================================
+   17. MISC
+   ============================================ */
+.dark-mode .hover\:bg-gray-50:hover {
+    background-color: #334155 !important;
+}
+
+.dark-mode .animate-notif {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.dark-mode .bg-blue-100 i,
+.dark-mode .bg-indigo-100 i,
+.dark-mode .bg-purple-100 i {
+    color: inherit !important;
+}
+
+/* Login page gradient fix */
+.dark-mode .bg-blue-50 p {
+    color: #60a5fa !important;
+}

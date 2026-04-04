@@ -6,17 +6,15 @@
     <title>Login - ML Personality</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename='dark-mode.css') }}">
+
     <script src="{{ url_for('static', filename='Theme.js') }}"></script>
     
     <style>
         body { background: linear-gradient(to bottom, #f8fafc, #f1f5f9); transition: all 0.3s ease; }
+        .dark-mode body, .dark-mode { background: #0f172a !important; }
         
-        /* Dukungan Mode Gelap */
-        .dark-mode, .dark-mode body { background: #0f172a !important; color: #f8fafc !important; }
-        .dark-mode .bg-white { background-color: #1e293b !important; border-color: #334155 !important; }
-        .dark-mode h1, .dark-mode h2, .dark-mode label { color: #f8fafc !important; }
-        .dark-mode input { background-color: #0f172a !important; border-color: #334155 !important; color: white !important; }
+        /* Dark mode dikelola oleh Theme.js */
     </style>
 </head>
 

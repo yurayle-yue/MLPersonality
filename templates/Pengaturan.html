@@ -8,6 +8,7 @@
     <title>Pengaturan - ML Personality</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dark-mode.css') }}">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
 
@@ -33,54 +34,7 @@
             animation: notif 0.4s ease-out; 
         }
 
-        /* LOGIKA CSS MODE GELAP YANG SERAGAM */
-        .dark-mode, 
-        .dark-mode body { 
-            background-color: #0f172a !important; 
-            color: #f8fafc !important; 
-        }
-
-        .dark-mode aside, 
-        .dark-mode .bg-white, 
-        .dark-mode main { 
-            background-color: #1e293b !important; 
-            border-color: #334155 !important; 
-        }
-
-        .dark-mode h1, .dark-mode h2, .dark-mode h3, 
-        .dark-mode h4, .dark-mode h5, .dark-mode h6, 
-        .dark-mode p, .dark-mode span, .dark-mode label { 
-            color: #f8fafc !important; 
-        }
-
-        .dark-mode .text-gray-900, 
-        .dark-mode .text-gray-800, 
-        .dark-mode .text-gray-700, 
-        .dark-mode .text-gray-600 { 
-            color: #f8fafc !important; 
-        }
-
-        .dark-mode .text-gray-500 { 
-            color: #cbd5e1 !important; 
-        }
-
-        .dark-mode .bg-slate-50 { 
-            background-color: #334155 !important; 
-        }
-
-        .dark-mode .border-gray-100, 
-        .dark-mode .border-gray-200, 
-        .dark-mode div { 
-            border-color: #334155 !important; 
-        }
-
-        .dark-mode nav a:not(.sidebar-item-active) { 
-            color: #94a3b8 !important; 
-        }
-
-        .dark-mode #sidebarToggle { 
-            color: #f8fafc !important; 
-        }
+        /* Dark mode dikelola oleh Theme.js */
     </style>
 </head>
 <body class="flex min-h-screen relative overflow-x-hidden">
