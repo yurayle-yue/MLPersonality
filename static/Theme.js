@@ -74,5 +74,21 @@ style.innerHTML = `
     .dark-mode .bg-blue-50, .dark-mode .bg-orange-50 {
         background-color: #1e293b !important;
     }
+
+    /* Notification Panel Dark Mode */
+    .dark-mode #notifPanel {
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
+    }
+    .dark-mode #notifPanel .border-gray-100,
+    .dark-mode #notifPanel .border-b {
+        border-color: #334155 !important;
+    }
+    .dark-mode .notif-item:hover {
+        background-color: #334155 !important;
+    }
+    .dark-mode .bg-green-50, .dark-mode .bg-amber-50 {
+        background-color: #1e293b !important;
+    }
 `;
 document.head.appendChild(style);

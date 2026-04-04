@@ -138,6 +138,7 @@ def hasil():
 
         return render_template('HasilAnalisis.html',
             has_results=True,
+            answers=answers,
             results=ml_metrics['results'],
             cms=ml_metrics['cms'],
             probabilities=ml_metrics['probabilities'],
@@ -160,32 +161,6 @@ def reset():
     session.pop('analyzed', None)
     return redirect(url_for('index'))
 
-
-@app.route('/perbandingan')
-def perbandingan():
-    if not session.get('logged_in'):
-        return redirect(url_for('login'))
-
-    if not session.get('analyzed'):
-        return render_template('Perbandingan.html', has_results=False)
-
-    try:
-        answers = session.get('answers', [0] * 10)
-        prediction = predict_from_answers(answers)
-
-        return render_template('Perbandingan.html',
-            has_results=True,
-            answers=answers,
-            results=ml_metrics['results'],
-            prediction=prediction,
-            final_pred=prediction['final'],
-            confidence=prediction['confidence']
-        )
-    except Exception as e:
-        print(f"Error: {e}")
-        import traceback
-        traceback.print_exc()
-        return render_template('Perbandingan.html', has_results=False)
 
 
 @app.route('/tentang')

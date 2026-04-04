@@ -2,6 +2,7 @@
 <html lang="id">
 <head>
     <script src="{{ url_for('static', filename='Theme.js') }}"></script>
+    <script src="{{ url_for('static', filename='Notifikasi.js') }}"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pengaturan - ML Personality</title>
@@ -113,11 +114,6 @@
                 <span class="font-bold text-sm">Hasil Analisis</span>
             </a>
 
-            <a href="{{ url_for('perbandingan') }}" class="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 text-gray-500 hover:bg-gray-50 rounded-xl md:rounded-2xl transition-all">
-                <i class="fas fa-balance-scale"></i>
-                <span class="font-bold text-sm">Perbandingan</span>
-            </a>
-
             <a href="{{ url_for('tentang') }}" class="flex items-center gap-3 md:gap-4 px-4 md:px-5 py-3 md:py-4 text-gray-500 hover:bg-gray-50 rounded-xl md:rounded-2xl transition-all">
                 <i class="fas fa-id-card"></i>
                 <span class="font-bold text-sm">Tentang</span>
@@ -156,9 +152,19 @@
                 <i class="fas fa-bars text-2xl"></i>
             </button>
             <div class="flex items-center gap-4">
-                <div class="relative p-2 text-orange-400 bg-orange-50 rounded-lg cursor-default">
-                    <i class="fas fa-bell"></i>
-                    <span class="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white"></span>
+                <div class="relative">
+                    <button onclick="toggleNotifPanel()" class="relative p-2 text-orange-400 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors cursor-pointer">
+                        <i class="fas fa-bell"></i>
+                        <span id="notifBadge" class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-white text-[10px] font-black items-center justify-center border-2 border-white" style="display:none"></span>
+                    </button>
+                    <div id="notifOverlay" class="fixed inset-0 z-40 hidden" onclick="toggleNotifPanel()"></div>
+                    <div id="notifPanel" class="hidden absolute right-0 top-12 w-[340px] md:w-[400px] bg-white rounded-2xl md:rounded-3xl shadow-2xl border border-gray-100 z-50 overflow-hidden" style="max-height: 70vh;">
+                        <div class="flex items-center justify-between px-5 py-4 border-b border-gray-100">
+                            <h4 class="font-black text-gray-800 text-sm">Notifikasi</h4>
+                            <button onclick="hapusSemuaNotifikasi()" class="text-[11px] font-bold text-red-400 hover:text-red-600 transition-colors">Hapus Semua</button>
+                        </div>
+                        <div id="notifListContainer" class="overflow-y-auto" style="max-height: calc(70vh - 60px);"></div>
+                    </div>
                 </div>
                 <div class="hidden md:flex w-10 h-10 bg-blue-500 rounded-full items-center justify-center text-white font-bold shadow-md">
                     22
@@ -348,15 +354,18 @@
         }
 
         // FUNGSI RESET TOTAL (Masa lalu & Progres Kuesioner)
-        function notifHapus() { 
+        function notifHapus() {
             // 1. Hapus memori riwayat (Hasil Analisis)
             localStorage.removeItem('riwayatTes');
-            
+
             // 2. Hapus memori progres jawaban Kuesioner
             localStorage.removeItem('jawabanKuesioner');
-            
+
             // 3. Hapus penanda sesi agar bisa buat riwayat baru lagi jika disubmit ulang
             sessionStorage.removeItem('riwayatDisimpanSesiIni');
+
+            // 4. Hapus semua notifikasi
+            hapusSemuaNotifikasi();
             
             muatRiwayat();
             tampilkanToast("Semua Riwayat & Progres Dihapus!", "hapus"); 
